@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 import requests
-# import Weather here!!!!
+# TODO import Weather here!!!!
 
 
 """
@@ -37,5 +37,4 @@ def root():
 @app.get("/cities/{name}")
 def read_city(name: str):
     weather = Weather(city=name, latitude='lattt', longitude='long')
-    # TODO get the tempereture of this city
     return {"city_name": weather.current_temperature()}
