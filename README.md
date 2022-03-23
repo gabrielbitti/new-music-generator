@@ -1,1 +1,2 @@
-# Back-End Challange
+# new-playlist-generator
+SAFE Labs - Backend Challenge
