@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, HTTPException
 from weather.open_weather import OpenWeather
 
@@ -10,7 +11,7 @@ def index():
 
 
 @app.get("/cities/playlists")
-def read_cities_playlists(city: str = '', latitude: str = '', longitude=''):
+def read_cities_playlists(city: Optional[str] = None, latitude: Optional[float] = None, longitude: Optional[float] = None):
     try:
         open_weather = OpenWeather(city, latitude, longitude)
         temperature_in_celcius = open_weather.get_current_temperature_in_celcius()
@@ -28,7 +29,11 @@ def read_cities_playlists(city: str = '', latitude: str = '', longitude=''):
 
 
 @app.get("/cities/tracks")
-def read_cities_tracks(city: str = '', latitude: str = '', longitude=''):
+def read_cities_tracks(city: Optional[str] = None, latitude: Optional[float] = None, longitude: Optional[float] = None):
+    open_weather = OpenWeather(city, latitude, longitude)
+    temperature_in_celcius = open_weather.get_current_temperature_in_celcius()
+    spotify_tracks = open_weather.get_tracks_for_current_temperature()
+
     try:
         open_weather = OpenWeather(city, latitude, longitude)
         temperature_in_celcius = open_weather.get_current_temperature_in_celcius()

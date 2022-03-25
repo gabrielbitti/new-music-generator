@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sound.spotify import Spotify
 import requests
 
@@ -25,14 +26,36 @@ class OpenWeather():
             return 'classic music'
 
     def get_weather_data(self):
-        response = requests.get("{url}/weather?q={city}&appid={api_key}".format(
-            url=self.config['base_url'], city=self.city_name, api_key=self.config['api_key']))
-        return response.json()
+        base_url = "{url}/weather".format(url=self.config['base_url'])
+
+        if self.city_name != None:
+            params = {
+                'q': self.city_name,
+                'appid': self.config['api_key'],
+            }
+
+            response = requests.get(url=base_url, params=params)
+            return response.json()
+        
+        if self.latitude != None and self.longitude != None:
+            params = {
+                'lat': self.latitude,
+                'lon': self.longitude,
+                'appid': self.config['api_key'],
+            }
+
+            response = requests.get(url=base_url, params=params)
+            return response.json()
+        
+        return False
 
     def get_current_temperature_in_celcius(self):
-        weather_data = self.get_weather_data()
-        temperature_in_celcius = float(weather_data['main']['temp']) - 273.15
-        return "{0:.0f}".format(round(temperature_in_celcius, 2))
+        try:
+            weather_data = self.get_weather_data()
+            temperature_in_celcius = float(weather_data['main']['temp']) - 273.15
+            return "{0:.0f}".format(round(temperature_in_celcius, 2))
+        except:
+            raise HTTPException(status_code=400, detail='City informations is invalid')
 
     def get_playlists_for_current_temperature(self):
         temperature_in_celcius = self.get_current_temperature_in_celcius()
