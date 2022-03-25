@@ -90,7 +90,7 @@ class OpenWeather():
 
             items.append({
                 'name': item['name'],
-                'artist': ', '.join(artists),
+                'artists': ', '.join(artists),
                 'url': item['external_urls']['spotify'],
             })
 
