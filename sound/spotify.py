@@ -9,6 +9,10 @@ class Spotify:
         'base_url': 'https://api.spotify.com/v1',
     }
 
+    def get_access_token(self):
+        authorization = self.client_credentials_authorization()
+        return authorization['access_token']
+
     def client_credentials_authorization(self):
         payload = {
             'grant_type': 'client_credentials',
@@ -28,11 +32,9 @@ class Spotify:
         return response.json()
 
     def search(self, arguments, type):
-        authorization = self.client_credentials_authorization()
-        access_token = authorization['access_token']
         headers = {
             'Content-Type': 'application/json',
-            'Authorization': f'Bearer {access_token}',
+            'Authorization': f'Bearer {self.get_access_token()}'
         }
 
         params = {
