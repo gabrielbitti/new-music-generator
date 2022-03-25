@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from sound.spotify import Spotify
+from modules.spotify import Spotify
 import requests
 
 

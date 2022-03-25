@@ -1,6 +1,6 @@
 from typing import Optional
 from fastapi import FastAPI, HTTPException
-from weather.open_weather import OpenWeather
+from modules.open_weather import OpenWeather
 
 app = FastAPI()
 
