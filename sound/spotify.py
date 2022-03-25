@@ -27,25 +27,20 @@ class Spotify:
 
         return response.json()
 
-    def get_playlists_from_category_slug(self, category):
+    def search(self, arguments, type):
         authorization = self.client_credentials_authorization()
         access_token = authorization['access_token']
         headers = {
+            'Content-Type': 'application/json',
             'Authorization': f'Bearer {access_token}',
         }
 
-        url = "{url}/browse/categories/{category_id}/playlists?client_id={key}".format(
-            url=self.config['base_url'], category_id=category, key=self.config['client_id'])
+        params = {
+            'q': arguments,
+            'type': type,
+        }
 
-        request_result = requests.get(url=url, headers=headers)
-        return request_result.json()
+        url = "{url}/search".format(url=self.config['base_url'])
 
-    def get_category_by_current_temperature(self, temperature):
-        if temperature > 30:
-            return 'party'
-        if temperature >= 15 and temperature <= 30:
-            return 'pop'
-        if temperature >= 10 and temperature <= 14:
-            return 'rock'
-        if temperature < 10:
-            return 'classic music'
+        response = requests.get(url=url, headers=headers, params=params)
+        return response.json()
